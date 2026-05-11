@@ -1,0 +1,14 @@
+server:
+  port: 8080
+spring:
+  profiles:
+    active: dev
+  datasource:
+    driver-class-name: ${mwh.datasource.driver-class-name}
+    url: jdbc:mysql://${mwh.datasource.host}:${mwh.datasource.port}/${mwh.datasource.database}
+    username: ${mwh.datasource.username}
+    password: ${mwh.datasource.password}
+  data:
+    redis:
+      host: ${mwh.redis.host}
+      port: ${mwh.redis.port}
