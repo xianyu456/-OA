@@ -15,3 +15,15 @@ spring:
 jwt:
   secret: ${mwh.jwt.secret}
   expiration: ${mwh.jwt.expiration}
+dromara:
+  x-file-storage:
+    default-platform: ${mwh.minio.platform}
+    minio:
+      - platform: ${mwh.minio.platform}
+        access-key: ${mwh.minio.access-key}
+        secret-key: ${mwh.minio.secret-key}
+        bucket-name: ${mwh.minio.bucket-name}
+        end-point: ${mwh.minio.end-point}
+        domain: ${mwh.minio.domain}
+        enable-storage : ${mwh.minio.enable-storage}
+        base-path: ${mwh.minio.base-path}

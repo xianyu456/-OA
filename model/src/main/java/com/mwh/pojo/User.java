@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mwh.Enum.UserEnum;
 import lombok.Data;
 
@@ -72,7 +73,8 @@ public class User implements Serializable {
     /**
      * 入职日期
      */
-    private Date hireDate;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private LocalDate hireDate;
 
     /**
      * 创建时间

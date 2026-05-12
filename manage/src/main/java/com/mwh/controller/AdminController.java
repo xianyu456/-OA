@@ -8,10 +8,8 @@ import com.mwh.service.UserService;
 import com.mwh.vo.UserVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,8 +21,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminController {
     private final UserService userService;
-    /** 仅HR和BOSS
-     * 查看所有用户
+    private final PasswordEncoder passwordEncoder;
+    /** 仅HR和BOSS查看所有员工
      * */
     @GetMapping("/allPeople")
     @PreAuthorize("hasAnyRole('HR', 'BOSS')")
@@ -32,10 +30,17 @@ public class AdminController {
         return Result.success(userService.selectAllPeople(userPageDTO));
     }
 
-    /** 仅BOSS */
-    @GetMapping("/settings")
+    /** 仅BOSS和HR新增员工 */
+    @PostMapping("/settings")
     @PreAuthorize("hasRole('BOSS')")
-    public Result<String> systemSettings() {
-        return Result.success("系统设置（仅老板可访问）");
+    public Result<String> addUser(@RequestBody User user) {
+        String password = user.getPassword();
+        String encode = passwordEncoder.encode(password);
+        user.setPassword(encode);
+        boolean save = userService.save(user);
+        if (!save) {
+            return Result.error("新增员工失败");
+        }
+        return Result.success("新增成功");
     }
 }

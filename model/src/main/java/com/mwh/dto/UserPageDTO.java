@@ -5,14 +5,14 @@ import lombok.Data;
 
 /**
  * @Author admin
- * @Description TODO
+ * @Description 员工分页前端参数
  * @Date 2026/05/12/14:45
  * @Version 1.0
  */
 @Data
 public class UserPageDTO {
-    private Integer pageNum;
-    private Integer pageSize;
+    private Integer pageNum = 1;
+    private Integer pageSize = 10;
     private Integer status;
     private UserEnum role;
     private String realname;

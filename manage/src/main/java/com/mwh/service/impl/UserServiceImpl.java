@@ -23,8 +23,18 @@ import java.util.List;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     implements UserService{
     private final UserMapper userMapper;
+    /**
+     * 查询所有员工
+     * @return
+     */
     @Override
     public PageResult selectAllPeople(UserPageDTO userPageDTO) {
+        if (userPageDTO.getPageNum() == null) {
+            userPageDTO.setPageNum(1);
+        }
+        if(userPageDTO.getPageSize() == null){
+            userPageDTO.setPageSize(10);
+        }
         Page<UserVo> userVoPage = new Page<>(userPageDTO.getPageNum(), userPageDTO.getPageSize());
         List<UserVo> userVos = userMapper.selectAllPeople(userVoPage, userPageDTO);
         PageResult pageResult = new PageResult();

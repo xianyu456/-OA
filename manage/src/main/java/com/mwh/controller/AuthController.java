@@ -28,6 +28,11 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
 
+    /**
+     * 登录接口
+     * @param loginDTO
+     * @return
+     */
     @PostMapping("/login")
     public Result<Map<String, String>> login(@RequestBody LoginDTO loginDTO) {
         try {
