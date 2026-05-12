@@ -12,3 +12,6 @@ spring:
     redis:
       host: ${mwh.redis.host}
       port: ${mwh.redis.port}
+jwt:
+  secret: ${mwh.jwt.secret}
+  expiration: ${mwh.jwt.expiration}
