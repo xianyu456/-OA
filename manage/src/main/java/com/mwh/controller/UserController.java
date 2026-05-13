@@ -52,10 +52,4 @@ public class UserController {
         return Result.success("更新用户信息（仅HR/老板可见）");
     }
 
-    /** 仅HR和BOSS可访问 */
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('HR', 'BOSS')")
-    public Result<String> deleteUser(@AuthenticationPrincipal MyUserDetails principal) {
-        return Result.success("删除用户（仅HR/老板可见）");
-    }
 }
