@@ -19,5 +19,16 @@ public interface UserService extends IService<User> {
      * 查询所有用户
      * @return
      */
-   
+
+    /**
+      * 修改用户信息
+      * @param user
+      */
+   void updateUser(User user);
+
+   /**
+     * 删除用户(不能删除BOSS)
+     * @param id
+     */
+   void deleteUser(Long id);
 }
