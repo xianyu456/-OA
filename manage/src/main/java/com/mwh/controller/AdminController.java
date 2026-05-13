@@ -1,5 +1,6 @@
 package com.mwh.controller;
 
+import com.mwh.config.MyUserDetails;
 import com.mwh.dto.UserPageDTO;
 import com.mwh.pojo.User;
 import com.mwh.result.PageResult;
@@ -8,6 +9,7 @@ import com.mwh.service.UserService;
 import com.mwh.vo.UserVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -29,6 +31,7 @@ public class AdminController {
     @GetMapping("/allPeople")
     @PreAuthorize("hasAnyRole('HR', 'BOSS')")
     public Result<PageResult> selectAllPeople(UserPageDTO userPageDTO) {
+
         return Result.success(userService.selectAllPeople(userPageDTO));
     }
 

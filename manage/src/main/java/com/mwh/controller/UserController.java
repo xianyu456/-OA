@@ -28,7 +28,6 @@ public class UserController {
         );
         return Result.success(data);
     }
-
     /** 仅HR和BOSS可访问 */
     @GetMapping("/list")
     @PreAuthorize("hasAnyRole('HR', 'BOSS')")
