@@ -16,10 +16,10 @@ import org.springframework.web.client.RestTemplate;
 public class FaceController {
 
     private final RestTemplate restTemplate = new RestTemplate();
-    private final String pythonUrl = "http://localhost:5000/detect";
 
     @PostMapping("/face-detect")
     public String faceDetect() {
+        String pythonUrl = "http://localhost:5000/detect";
         return restTemplate.postForObject(pythonUrl, null, String.class);
     }
 }

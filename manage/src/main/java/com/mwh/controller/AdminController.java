@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ import java.util.List;
 public class AdminController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private final RestTemplate restTemplate = new RestTemplate();
     /** 仅HR和BOSS查看所有员工
      * */
     @GetMapping("/allPeople")
@@ -37,6 +39,8 @@ public class AdminController {
         String password = user.getPassword();
         String encode = passwordEncoder.encode(password);
         user.setPassword(encode);
+        String pythonUrl = "http://localhost:5000/reload";
+        restTemplate.postForObject(pythonUrl,null,String.class);
         boolean save = userService.save(user);
         if (!save) {
             return Result.error("新增员工失败");
