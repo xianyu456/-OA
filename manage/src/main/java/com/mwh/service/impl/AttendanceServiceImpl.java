@@ -1,15 +1,21 @@
 package com.mwh.service.impl;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mwh.Enum.AttendanceEnum;
+import com.mwh.dto.AttendancePageDTO;
 import com.mwh.mapper.AttendanceRuleMapper;
 import com.mwh.pojo.Attendance;
 import com.mwh.pojo.AttendanceResult;
 import com.mwh.pojo.AttendanceRule;
 import com.mwh.pojo.FaceDetectResult;
+import com.mwh.result.PageResult;
 import com.mwh.service.AttendanceService;
 import com.mwh.mapper.AttendanceMapper;
+import com.mwh.vo.AttendanceVo;
 import com.mwh.vo.IsAttendOk;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -90,6 +96,14 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
         }
         return new IsAttendOk(false, "请勿重复打卡");
     }
+
+    @Override
+    public PageResult getList(AttendancePageDTO pageDTO) {
+        Page<AttendanceVo> attendanceVoPage = new Page<>(pageDTO.getPageNum(), pageDTO.getPageSize());
+        IPage<AttendanceVo> page = attendanceMapper.selectByPage(attendanceVoPage, pageDTO);
+        return new PageResult(page.getTotal(), page.getRecords());
+    }
+
     /**
      * 判断打卡时间是否迟到
      */

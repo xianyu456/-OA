@@ -1,7 +1,9 @@
 package com.mwh.service;
 
+import com.mwh.dto.AttendancePageDTO;
 import com.mwh.pojo.Attendance;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.mwh.result.PageResult;
 import com.mwh.vo.IsAttendOk;
 
 /**
@@ -15,4 +17,11 @@ public interface AttendanceService extends IService<Attendance> {
      * @return
      */
     IsAttendOk getAttendance();
+
+    /**
+     * 获取考勤记录
+     * @param pageDTO
+     * @return
+     */
+    PageResult getList(AttendancePageDTO pageDTO);
 }

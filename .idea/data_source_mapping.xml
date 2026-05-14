@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourcePerFileMappings">
+    <file url="file://$PROJECT_DIR$/manage/src/main/resources/com/mwh/mapper/AttendanceMapper.xml" value="bb4c61d4-9a9d-4dc2-bd84-c6a4ebb8f910" />
     <file url="file://$PROJECT_DIR$/manage/src/main/resources/com/mwh/mapper/UserMapper.xml" value="bb4c61d4-9a9d-4dc2-bd84-c6a4ebb8f910" />
   </component>
 </project>
