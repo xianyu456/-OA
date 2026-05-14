@@ -69,12 +69,6 @@ public class Attendance implements Serializable {
      * 打卡来源：1人脸识别 2手动补录 3API
      */
     private Integer source;
-
-    /**
-     * 打卡照片URL（MinIO，可选留底）
-     */
-    private String photoUrl;
-
     /**
      * 备注
      */
@@ -110,7 +104,6 @@ public class Attendance implements Serializable {
             && (this.getEarlyMinutes() == null ? other.getEarlyMinutes() == null : this.getEarlyMinutes().equals(other.getEarlyMinutes()))
             && (this.getWorkHours() == null ? other.getWorkHours() == null : this.getWorkHours().equals(other.getWorkHours()))
             && (this.getSource() == null ? other.getSource() == null : this.getSource().equals(other.getSource()))
-            && (this.getPhotoUrl() == null ? other.getPhotoUrl() == null : this.getPhotoUrl().equals(other.getPhotoUrl()))
             && (this.getRemark() == null ? other.getRemark() == null : this.getRemark().equals(other.getRemark()))
             && (this.getCreatedAt() == null ? other.getCreatedAt() == null : this.getCreatedAt().equals(other.getCreatedAt()));
     }
@@ -129,7 +122,6 @@ public class Attendance implements Serializable {
         result = prime * result + ((getEarlyMinutes() == null) ? 0 : getEarlyMinutes().hashCode());
         result = prime * result + ((getWorkHours() == null) ? 0 : getWorkHours().hashCode());
         result = prime * result + ((getSource() == null) ? 0 : getSource().hashCode());
-        result = prime * result + ((getPhotoUrl() == null) ? 0 : getPhotoUrl().hashCode());
         result = prime * result + ((getRemark() == null) ? 0 : getRemark().hashCode());
         result = prime * result + ((getCreatedAt() == null) ? 0 : getCreatedAt().hashCode());
         return result;
@@ -151,7 +143,6 @@ public class Attendance implements Serializable {
         sb.append(", earlyMinutes=").append(earlyMinutes);
         sb.append(", workHours=").append(workHours);
         sb.append(", source=").append(source);
-        sb.append(", photoUrl=").append(photoUrl);
         sb.append(", remark=").append(remark);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", serialVersionUID=").append(serialVersionUID);

@@ -5,6 +5,7 @@ import com.mwh.pojo.Attendance;
 import com.mwh.pojo.FaceDetectResult;
 import com.mwh.result.Result;
 import com.mwh.service.AttendanceService;
+import com.mwh.vo.IsAttendOk;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,8 +30,8 @@ public class AttendanceController {
      * @return Result<AttendanceEnum>
      */
     @PostMapping("/face-detect")
-    public Result<Attendance> faceDetect() {
-        Attendance attendance = attendanceService.getAttendance();
+    public Result<IsAttendOk> faceDetect() {
+        IsAttendOk attendance = attendanceService.getAttendance();
         return Result.success(attendance);
     }
 }
