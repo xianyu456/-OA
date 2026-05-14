@@ -9,10 +9,7 @@ import com.mwh.result.Result;
 import com.mwh.service.AttendanceService;
 import com.mwh.vo.IsAttendOk;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
@@ -38,11 +35,5 @@ public class AttendanceController {
         IsAttendOk attendance = attendanceService.getAttendance();
         return Result.success(attendance);
     }
-    /**
-     * 获取考勤记录
-     */
-    @GetMapping("/list")
-    public Result<PageResult> list(AttendancePageDTO pageDTO) {
-        return Result.success(attendanceService.getList(pageDTO));
-    }
+
 }

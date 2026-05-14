@@ -1,11 +1,17 @@
 package com.mwh.controller;
 
 import com.mwh.config.MyUserDetails;
+import com.mwh.dto.AttendancePageDTO;
 import com.mwh.dto.UserPageDTO;
+import com.mwh.pojo.Attendance;
+import com.mwh.pojo.AttendanceRule;
 import com.mwh.pojo.User;
 import com.mwh.result.PageResult;
 import com.mwh.result.Result;
+import com.mwh.service.AttendanceRuleService;
+import com.mwh.service.AttendanceService;
 import com.mwh.service.UserService;
+import com.mwh.util.SecurityUtils;
 import com.mwh.vo.UserVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,6 +32,8 @@ public class AdminController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final RestTemplate restTemplate = new RestTemplate();
+    private final AttendanceService attendanceService;
+    private final AttendanceRuleService attendanceRuleService;
 
     /**
      * 仅HR和BOSS查看所有员工
@@ -70,4 +78,70 @@ public class AdminController {
             return Result.error(500, "删除失败: " + e.getMessage());
         }
     }
+    //TODO 现在没有将id转为实际用户名称
+    /**
+     * 仅HR和BOSS获取考勤记录
+     */
+    @GetMapping("/attendance/list")
+    @PreAuthorize("hasAnyRole('HR', 'BOSS')")
+    public Result<PageResult> list(AttendancePageDTO pageDTO) {
+        return Result.success(attendanceService.getList(pageDTO));
+    }
+    /**
+     * 仅HR和BOSS修改考勤记录
+     */
+    @PutMapping("/update")
+    @PreAuthorize("hasAnyRole('HR', 'BOSS')")
+    public Result<String> update(@RequestBody Attendance attendance) {
+        return attendanceService.updateById(attendance) ? Result.success("修改成功") : Result.error("修改失败");
+    }
+    /**
+     * 仅HR和BOSS删除考勤记录
+     */
+    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyRole('HR', 'BOSS')")
+    public Result<String> delete(@PathVariable Integer id) {
+        return attendanceService.removeById(id) ? Result.success("删除成功") : Result.error("删除失败");
+    }
+    /**
+     * 仅boss添加考勤规则
+     */
+    @PostMapping("/add")
+    @PreAuthorize("hasAnyRole('BOSS')")
+    public Result<String> add(@RequestBody AttendanceRule attendanceRule) {
+        attendanceRule.setUpdatedBy(SecurityUtils.getCurrentUserId());
+        return attendanceRuleService.save(attendanceRule) ? Result.success("添加成功") : Result.error("添加失败");
+    }
+
+    /**
+     * 修改考勤规则
+     * @param attendanceRule
+     * @return
+     */
+    @PostMapping("/update")
+    @PreAuthorize("hasAnyRole('BOSS')")
+    public Result<String> update(@RequestBody AttendanceRule attendanceRule) {
+        attendanceRule.setUpdatedBy(SecurityUtils.getCurrentUserId());
+        return attendanceRuleService.updateById(attendanceRule) ? Result.success("更新成功") : Result.error("更新失败");
+    }
+    /**
+     * 删除考勤规则
+     * @param id
+     * @return
+     */
+    @PostMapping("/delete/{id}")
+    @PreAuthorize("hasAnyRole('BOSS')")
+    public Result<String> delete(@PathVariable Long id) {
+        return attendanceRuleService.removeById(id) ? Result.success("删除成功") : Result.error("删除失败");
+    }
+    /**
+     * 查看所有考勤规则
+     * @return
+     */
+    @GetMapping("/rule/list")
+    @PreAuthorize("hasAnyRole('BOSS','HR')")
+    public Result<List<AttendanceRule>> list() {
+        return Result.success(attendanceRuleService.list());
+    }
+
 }
