@@ -1,7 +1,11 @@
 package com.mwh.controller;
 
 import com.mwh.config.MyUserDetails;
+import com.mwh.dto.UserAttPageDTO;
+import com.mwh.mapper.AttendanceMapper;
+import com.mwh.result.PageResult;
 import com.mwh.result.Result;
+import com.mwh.service.AttendanceService;
 import com.mwh.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,6 +22,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final AttendanceService attendanceService;
 
     /** 所有已认证用户均可访问（EMPLOYEE/HR/BOSS） */
     @GetMapping("/profile")
@@ -37,11 +42,11 @@ public class UserController {
         return Result.success("所有用户列表（仅HR/老板可见）");
     }
 
-    /** 仅员工本人可访问 */
+    /** 仅员工本人可访问查看个人考勤记录 */
     @GetMapping("/my-attendance")
-    @PreAuthorize("hasRole('EMPLOYEE')")
-    public Result<String> myAttendance(@AuthenticationPrincipal MyUserDetails principal) {
-        return Result.success(principal.getRealName() + " 的考勤记录");
+    @PreAuthorize("hasAnyRole('EMPLOYEE','HR')")
+    public Result<PageResult> myAttendance(UserAttPageDTO userAttPageDTO) {
+        return Result.success(attendanceService.getOwnAttendance(userAttPageDTO));
     }
 
     /** 仅HR和BOSS可访问 */

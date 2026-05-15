@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mwh.Enum.AttendanceEnum;
 import com.mwh.dto.AttendancePageDTO;
+import com.mwh.dto.UserAttPageDTO;
 import com.mwh.mapper.AttendanceRuleMapper;
 import com.mwh.pojo.Attendance;
 import com.mwh.pojo.AttendanceResult;
@@ -15,6 +16,7 @@ import com.mwh.pojo.FaceDetectResult;
 import com.mwh.result.PageResult;
 import com.mwh.service.AttendanceService;
 import com.mwh.mapper.AttendanceMapper;
+import com.mwh.util.SecurityUtils;
 import com.mwh.vo.AttendanceVo;
 import com.mwh.vo.IsAttendOk;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,8 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Objects;
+
 /**
 * @author mawenhan
 * @description 针对表【attendance(考勤记录表)】的数据库操作Service实现
@@ -97,11 +101,31 @@ public class AttendanceServiceImpl extends ServiceImpl<AttendanceMapper, Attenda
         return new IsAttendOk(false, "请勿重复打卡");
     }
 
+    /**
+     * 获取考勤记录
+     * @param pageDTO
+     * @return
+     */
     @Override
     public PageResult getList(AttendancePageDTO pageDTO) {
         Page<AttendanceVo> attendanceVoPage = new Page<>(pageDTO.getPageNum(), pageDTO.getPageSize());
         IPage<AttendanceVo> page = attendanceMapper.selectByPage(attendanceVoPage, pageDTO);
         return new PageResult(page.getTotal(), page.getRecords());
+    }
+    /**
+     * 获取员工自己的考勤记录
+     * TODO 未完成查询
+     * @param userAttPageDTO
+     * @return
+     */
+    @Override
+    public PageResult getOwnAttendance(UserAttPageDTO userAttPageDTO) {
+        if(!Objects.equals(SecurityUtils.getCurrentUserId(),userAttPageDTO.getUserId())){
+            throw new RuntimeException("无权限访问别人的考勤记录");
+        }
+        Page<AttendanceVo> attendanceVoPage = new Page<>(userAttPageDTO.getPageNum(), userAttPageDTO.getPageSize());
+        IPage<AttendanceVo> page = attendanceMapper.selectOwnAttendance(attendanceVoPage,userAttPageDTO);
+        return new PageResult<>(page.getTotal(), page.getRecords());
     }
 
     /**

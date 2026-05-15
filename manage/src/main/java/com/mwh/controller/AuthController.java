@@ -46,6 +46,7 @@ public class AuthController {
             data.put("token", token);
             data.put("username", principal.getUsername());
             data.put("role", principal.getRole());
+            data.put("userid", String.valueOf(principal.getUserId()));
             return Result.success("登录成功", data);
         } catch (BadCredentialsException e) {
             return Result.error(401, "用户名或密码错误");

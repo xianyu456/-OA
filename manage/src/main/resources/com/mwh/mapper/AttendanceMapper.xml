@@ -3,8 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mwh.mapper.AttendanceMapper">
-
-    <select id="selectByPage" resultType="com.mwh.vo.AttendanceVo">
+    <sql id="vo">
         select a.id,
                u.real_name,
                a.attendance_date,
@@ -16,6 +15,9 @@
                a.work_hours,
                a.source,
                a.remark  from attendance a left join user u  on a.user_id = u.id
+    </sql>
+    <select id="selectByPage" resultType="com.mwh.vo.AttendanceVo">
+        <include refid="vo"/>
         <where>
             <if test="attendancePageDTO.realname != null">
                 and u.real_name like concat('%',#{attendancePageDTO.realname},'%')
@@ -28,6 +30,23 @@
             </if>
             <if test="attendancePageDTO.source != null">
                 and a.source = #{attendancePageDTO.source}
+            </if>
+        </where>
+    </select>
+    <select id="selectOwnAttendance" resultType="com.mwh.vo.AttendanceVo">
+        <include refid="vo"/>
+        <where>
+            <if test="userAttPageDTO.userId != null">
+                and a.user_id = #{userAttPageDTO.userId}
+            </if>
+            <if test="userAttPageDTO.checkDate != null">
+                and a.attendance_date = #{userAttPageDTO.checkDate}
+            </if>
+            <if test="userAttPageDTO.attendanceEnum != null">
+                and a.status = #{userAttPageDTO.attendanceEnum}
+            </if>
+            <if test="userAttPageDTO.sourceEnum != null">
+                and a.source = #{userAttPageDTO.sourceEnum}
             </if>
         </where>
     </select>

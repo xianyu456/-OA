@@ -27,3 +27,9 @@ dromara:
         domain: ${mwh.minio.domain}
         enable-storage : ${mwh.minio.enable-storage}
         base-path: ${mwh.minio.base-path}
+mybatis-plus:
+  configuration:
+    # 标准输出打印SQL日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 开启驼峰命名转换（通常推荐开启）
+    map-underscore-to-camel-case: true

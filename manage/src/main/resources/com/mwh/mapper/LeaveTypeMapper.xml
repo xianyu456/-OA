@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mwh.mapper.LeaveTypeMapper">
+
+    <resultMap id="BaseResultMap" type="com.mwh.pojo.LeaveType">
+            <id property="id" column="id" />
+            <result property="name" column="name" />
+            <result property="daysPerYear" column="days_per_year" />
+            <result property="needApproval" column="need_approval" />
+            <result property="sortOrder" column="sort_order" />
+            <result property="createdAt" column="created_at" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,days_per_year,need_approval,sort_order,created_at
+    </sql>
+</mapper>
