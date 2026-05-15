@@ -26,5 +26,10 @@ public interface AttendanceService extends IService<Attendance> {
      */
     PageResult getList(AttendancePageDTO pageDTO);
 
+    /**
+     * 获取个人考勤记录
+     * @param userAttPageDTO
+     * @return
+     */
     PageResult getOwnAttendance(UserAttPageDTO userAttPageDTO);
 }

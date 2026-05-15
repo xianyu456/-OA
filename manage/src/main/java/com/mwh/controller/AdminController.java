@@ -1,21 +1,22 @@
 package com.mwh.controller;
 
-import com.mwh.config.MyUserDetails;
 import com.mwh.dto.AttendancePageDTO;
 import com.mwh.dto.UserPageDTO;
 import com.mwh.pojo.Attendance;
 import com.mwh.pojo.AttendanceRule;
 import com.mwh.pojo.User;
+import com.mwh.pojo.LeaveType;
 import com.mwh.result.PageResult;
 import com.mwh.result.Result;
 import com.mwh.service.AttendanceRuleService;
 import com.mwh.service.AttendanceService;
+import com.mwh.service.LeaveTypeService;
 import com.mwh.service.UserService;
 import com.mwh.util.SecurityUtils;
-import com.mwh.vo.UserVo;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -34,14 +35,13 @@ public class AdminController {
     private final RestTemplate restTemplate = new RestTemplate();
     private final AttendanceService attendanceService;
     private final AttendanceRuleService attendanceRuleService;
-
+    private final LeaveTypeService leaveTypeService;
     /**
      * 仅HR和BOSS查看所有员工
      */
     @GetMapping("/allPeople")
     @PreAuthorize("hasAnyRole('HR', 'BOSS')")
     public Result<PageResult> selectAllPeople(UserPageDTO userPageDTO) {
-
         return Result.success(userService.selectAllPeople(userPageDTO));
     }
 
@@ -88,6 +88,14 @@ public class AdminController {
         return Result.success(attendanceService.getList(pageDTO));
     }
     /**
+     * 仅HR和BOS查看单个人员考勤记录
+     */
+    @GetMapping("/attendance/{id}")
+    @PreAuthorize("hasAnyRole('HR', 'BOSS')")
+    public Result<Attendance> attendanceResult(@PathVariable Long id){
+        return Result.success(attendanceService.getById(id));
+    }
+    /**
      * 仅HR和BOSS修改考勤记录
      */
     @PutMapping("/update")
@@ -125,6 +133,14 @@ public class AdminController {
         return attendanceRuleService.updateById(attendanceRule) ? Result.success("更新成功") : Result.error("更新失败");
     }
     /**
+     * 查看单个考勤规则
+     */
+    @GetMapping("/rule/{id}")
+    @PreAuthorize("hasAnyRole('BOSS')")
+    public Result<AttendanceRule> get(@PathVariable Long id) {
+        return Result.success(attendanceRuleService.getById(id));
+    }
+    /**
      * 删除考勤规则
      * @param id
      * @return
@@ -142,6 +158,46 @@ public class AdminController {
     @PreAuthorize("hasAnyRole('BOSS','HR')")
     public Result<List<AttendanceRule>> list() {
         return Result.success(attendanceRuleService.list());
+    }
+    /**
+     * 制定请假类型
+     */
+    @PostMapping("/leave/type")
+    @PreAuthorize("hasRole('BOSS')")
+    public Result<String> addLeaveType(@RequestBody LeaveType leaveType) {
+        return leaveTypeService.save(leaveType) ? Result.success("添加成功") : Result.error("添加失败");
+    }
+    /**
+     * 删除请假类型
+     */
+    @DeleteMapping("/leave/type/{id}")
+    @PreAuthorize("hasRole('BOSS')")
+    public Result<String> deleteLeaveType(@PathVariable Integer id) {
+        return leaveTypeService.removeById(id) ? Result.success("删除成功") : Result.error("删除失败");
+    }
+    /**
+     * 修改请假类型
+     */
+    @PutMapping("/leave/type")
+    @PreAuthorize("hasRole('BOSS')")
+    public Result<String> updateLeaveType(@RequestBody LeaveType leaveType) {
+        return leaveTypeService.updateById(leaveType) ? Result.success("修改成功") : Result.error("修改失败");
+    }
+    /**
+     * 查询请假类型
+     */
+    @GetMapping("/leave/type/list")
+    @PreAuthorize("hasAnyRole('BOSS','HR')")
+    public Result<List<LeaveType>> listLeaveType() {
+        return Result.success(leaveTypeService.list());
+    }
+    /**
+     * 查看单个请假类型
+     */
+    @GetMapping("/leave/type/{id}")
+    @PreAuthorize("hasAnyRole('BOSS')")
+    public Result<LeaveType> leaveType(@PathVariable Integer id) {
+        return Result.success(leaveTypeService.getById(id));
     }
 
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mwh.mapper.LeaveRequestMapper">
+
+    <resultMap id="BaseResultMap" type="com.mwh.pojo.LeaveRequest">
+            <id property="id" column="id" />
+            <result property="applicantId" column="applicant_id" />
+            <result property="leaveTypeId" column="leave_type_id" />
+            <result property="startTime" column="start_time" />
+            <result property="endTime" column="end_time" />
+            <result property="days" column="days" />
+            <result property="reason" column="reason" />
+            <result property="status" column="status" />
+            <result property="hrComment" column="hr_comment" />
+            <result property="bossComment" column="boss_comment" />
+            <result property="hrApprovedAt" column="hr_approved_at" />
+            <result property="bossApprovedAt" column="boss_approved_at" />
+            <result property="createdAt" column="created_at" />
+            <result property="updatedAt" column="updated_at" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,applicant_id,leave_type_id,start_time,end_time,days,
+        reason,status,hr_comment,boss_comment,hr_approved_at,
+        boss_approved_at,created_at,updated_at
+    </sql>
+</mapper>

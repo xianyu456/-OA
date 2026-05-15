@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @Author admin
- * @Description TODO
+ * @Description jwt配置类
  * @Date 2026/05/12/08:49
  * @Version 1.0
  */

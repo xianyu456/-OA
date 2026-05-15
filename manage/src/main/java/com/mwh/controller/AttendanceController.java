@@ -9,6 +9,7 @@ import com.mwh.result.Result;
 import com.mwh.service.AttendanceService;
 import com.mwh.vo.IsAttendOk;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -31,6 +32,7 @@ public class AttendanceController {
      * @return Result<AttendanceEnum>
      */
     @PostMapping("/face-detect")
+    @PreAuthorize("hasAnyRole('EMPLOYEE','HR','BOSS')")
     public Result<IsAttendOk> faceDetect() {
         IsAttendOk attendance = attendanceService.getAttendance();
         return Result.success(attendance);

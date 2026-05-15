@@ -81,12 +81,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // 公开接口（登录、注册等）
                         .requestMatchers("/auth/**", "/public/**", "/error").permitAll()
-                        // 管理员接口：HR和老板可访问
-                        .requestMatchers("/admin/**").hasAnyRole("HR", "BOSS")
-                        // HR专属接口
-                        .requestMatchers("/hr/**").hasRole("HR")
-                        // 用户级接口：所有已认证用户可访问
-                        .requestMatchers("/user/**").hasAnyRole("EMPLOYEE", "HR", "BOSS")
                         // 其他所有请求都需要认证
                         .anyRequest().authenticated()
                 )
