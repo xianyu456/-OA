@@ -12,7 +12,7 @@ import lombok.Getter;
  */
 @Getter
 public enum UserEnum {
-    USER(1, "普通用户"),
+    USER(1, "员工"),
     HR(2, "人事"),
     BOSS(3, "老板");
     @EnumValue

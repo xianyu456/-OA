@@ -4,26 +4,18 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mwh.mapper.LeaveRequestMapper">
 
-    <resultMap id="BaseResultMap" type="com.mwh.pojo.LeaveRequest">
-            <id property="id" column="id" />
-            <result property="applicantId" column="applicant_id" />
-            <result property="leaveTypeId" column="leave_type_id" />
-            <result property="startTime" column="start_time" />
-            <result property="endTime" column="end_time" />
-            <result property="days" column="days" />
-            <result property="reason" column="reason" />
-            <result property="status" column="status" />
-            <result property="hrComment" column="hr_comment" />
-            <result property="bossComment" column="boss_comment" />
-            <result property="hrApprovedAt" column="hr_approved_at" />
-            <result property="bossApprovedAt" column="boss_approved_at" />
-            <result property="createdAt" column="created_at" />
-            <result property="updatedAt" column="updated_at" />
-    </resultMap>
-
-    <sql id="Base_Column_List">
-        id,applicant_id,leave_type_id,start_time,end_time,days,
-        reason,status,hr_comment,boss_comment,hr_approved_at,
-        boss_approved_at,created_at,updated_at
-    </sql>
+    <select id="listByPage" resultType="com.mwh.pojo.LeaveRequest">
+        select l.id, l.applicant_id, l.leave_type_id, l.start_time, l.end_time, l.days, l.reason, l.status,
+        l.hr_comment, l.boss_comment, l.hr_approved_at, l.boss_approved_at, l.created_at, l.updated_at, t.name as
+        leaveTypeName, e.real_name as applicantName from leave_request l left join leave_type t on l.leave_type_id = t.id left join user e on
+        l.applicant_id = e.id
+        <where>
+            <if test="pageDTO.leaveTypeName != null">
+                and t.name like concat('%',#{pageDTO.leaveTypeName},'%')
+            </if>
+            <if test="pageDTO.commitDate != null">
+                and l.commit_date = #{pageDTO.commitDate}
+            </if>
+        </where>
+    </select>
 </mapper>

@@ -1,6 +1,7 @@
 package com.mwh.controller;
 
 import com.mwh.dto.AttendancePageDTO;
+import com.mwh.dto.LeavePageDTO;
 import com.mwh.dto.UserPageDTO;
 import com.mwh.pojo.Attendance;
 import com.mwh.pojo.AttendanceRule;
@@ -8,10 +9,7 @@ import com.mwh.pojo.User;
 import com.mwh.pojo.LeaveType;
 import com.mwh.result.PageResult;
 import com.mwh.result.Result;
-import com.mwh.service.AttendanceRuleService;
-import com.mwh.service.AttendanceService;
-import com.mwh.service.LeaveTypeService;
-import com.mwh.service.UserService;
+import com.mwh.service.*;
 import com.mwh.util.SecurityUtils;
 
 import lombok.RequiredArgsConstructor;
@@ -36,6 +34,7 @@ public class AdminController {
     private final AttendanceService attendanceService;
     private final AttendanceRuleService attendanceRuleService;
     private final LeaveTypeService leaveTypeService;
+    private final LeaveRequestService leaveRequestService;
     /**
      * 仅HR和BOSS查看所有员工
      */
@@ -199,5 +198,11 @@ public class AdminController {
     public Result<LeaveType> leaveType(@PathVariable Integer id) {
         return Result.success(leaveTypeService.getById(id));
     }
-
+    /**
+     * HR查看所有请假申请
+     */
+    @GetMapping("/leave/list")
+    public Result<PageResult> list(LeavePageDTO pageDTO) {
+        return Result.success(leaveRequestService.listByPage(pageDTO));
+    }
 }

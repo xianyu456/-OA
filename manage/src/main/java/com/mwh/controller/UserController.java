@@ -34,11 +34,11 @@ public class UserController {
     }
     /**
      * 填写请假信息
-     * TODO 未判断是员工请假还是HR请假
+     *
      */
     @PostMapping("/leave")
     @PreAuthorize("hasAnyRole('EMPLOYEE','HR')")
-    public Result leave(LeaveRequestDTO leaveRequestDTO) {
+    public Result leave(@RequestBody  LeaveRequestDTO leaveRequestDTO) {
         leaveRequestService.leave(leaveRequestDTO);
         return Result.success("填写成功");
     }

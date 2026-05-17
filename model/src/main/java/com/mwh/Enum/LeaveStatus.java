@@ -1,5 +1,7 @@
 package com.mwh.Enum;
 
+import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 /**
@@ -14,7 +16,9 @@ public enum LeaveStatus {
     APPROVED("已通过",3),
     REJECTED("驳回",4),
     HRAGREE("待老板审批",2);
+    @JsonValue
     private final String description;
+    @EnumValue
     private final Integer code;
     LeaveStatus(String description, Integer code) {
         this.description = description;

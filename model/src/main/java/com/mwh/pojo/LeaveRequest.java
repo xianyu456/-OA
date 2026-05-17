@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 import com.mwh.Enum.LeaveStatus;
@@ -26,21 +27,27 @@ public class LeaveRequest {
      * 申请人ID
      */
     private Long applicantId;
-
+    /**
+     * 申请人姓名
+     */
+    private String applicantName;
     /**
      * 请假类型ID
      */
     private Integer leaveTypeId;
-
+    /**
+     * 请假类型名称
+     */
+    private String leaveTypeName;
     /**
      * 请假开始时间
      */
-    private Date startTime;
+    private LocalDate startTime;
 
     /**
      * 请假结束时间
      */
-    private Date endTime;
+    private LocalDate endTime;
 
     /**
      * 请假天数
@@ -70,22 +77,22 @@ public class LeaveRequest {
     /**
      * HR审批时间
      */
-    private Date hrApprovedAt;
+    private LocalDate hrApprovedAt;
 
     /**
      * 老板审批时间
      */
-    private Date bossApprovedAt;
+    private LocalDate bossApprovedAt;
 
     /**
      * 申请时间
      */
-    private Date createdAt;
+    private LocalDate createdAt;
 
     /**
      * 更新时间
      */
-    private Date updatedAt;
+    private LocalDate updatedAt;
 
     @Override
     public boolean equals(Object that) {
