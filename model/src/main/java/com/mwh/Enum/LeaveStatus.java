@@ -12,10 +12,11 @@ import lombok.Getter;
  */
 @Getter
 public enum LeaveStatus {
-    PENDING("待HR审批",1),
-    APPROVED("已通过",3),
-    REJECTED("驳回",4),
-    HRAGREE("待老板审批",2);
+    PENDING("待HR审批",0),
+    HRAGREE("待老板审批",1),
+    APPROVED("已通过",2),
+    REJECTED("驳回",3),
+    BACK("撤销",4);
     @JsonValue
     private final String description;
     @EnumValue

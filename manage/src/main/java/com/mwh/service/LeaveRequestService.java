@@ -40,4 +40,11 @@ public interface LeaveRequestService extends IService<LeaveRequest> {
      * @return
      */
     LeaveSignleVO getByLeaveId(Integer id);
+
+    /**
+     * boss审批请假单
+     * @param leaveRequest
+     * @return
+     */
+    boolean bossPass(LeaveSignleVO leaveRequest);
 }

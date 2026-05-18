@@ -116,6 +116,23 @@ public class LeaveRequestServiceImpl extends ServiceImpl<LeaveRequestMapper, Lea
         BeanUtils.copyProperties(byId, leaveSignleVO);
         return leaveSignleVO;
     }
+
+    /**
+     * boss审批请假单
+     * @param leaveRequest
+     * @return
+     */
+    @Override
+    public boolean bossPass(LeaveSignleVO leaveRequest) {
+        LambdaQueryWrapper<LeaveRequest> leaveRequestLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        leaveRequestLambdaQueryWrapper.eq(LeaveRequest::getId, leaveRequest.getId());
+        LeaveRequest one = getOne(leaveRequestLambdaQueryWrapper);
+        one.setStatus(leaveRequest.getBossResult());
+        one.setBossComment(leaveRequest.getBossRemark());
+        one.setBossApprovedAt(LocalDate.now());
+        updateById(one);
+        return true;
+    }
 }
 
 

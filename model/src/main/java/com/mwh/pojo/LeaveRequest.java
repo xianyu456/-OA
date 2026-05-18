@@ -1,6 +1,7 @@
 package com.mwh.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.math.BigDecimal;
@@ -30,6 +31,7 @@ public class LeaveRequest {
     /**
      * 申请人姓名
      */
+    @TableField(exist = false)
     private String applicantName;
     /**
      * 请假类型ID
@@ -38,6 +40,7 @@ public class LeaveRequest {
     /**
      * 请假类型名称
      */
+    @TableField(exist = false)
     private String leaveTypeName;
     /**
      * 请假开始时间
