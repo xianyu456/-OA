@@ -2,6 +2,7 @@ package com.mwh.controller;
 
 import com.mwh.dto.AttendancePageDTO;
 import com.mwh.dto.LeavePageDTO;
+import com.mwh.dto.UpdateUserDTO;
 import com.mwh.dto.UserPageDTO;
 import com.mwh.pojo.*;
 import com.mwh.result.PageResult;
@@ -10,6 +11,7 @@ import com.mwh.service.*;
 import com.mwh.util.SecurityUtils;
 
 import com.mwh.vo.LeaveSignleVO;
+import com.mwh.vo.UserVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 
@@ -75,7 +77,22 @@ public class AdminController {
             return Result.error(500, "删除失败: " + e.getMessage());
         }
     }
-    //TODO 现在没有将id转为实际用户名称
+    /**
+     * 仅HR和BOSS获取单个人员信息
+     */
+    @GetMapping("/get/{id}")
+    @PreAuthorize("hasAnyRole('HR', 'BOSS')")
+    public Result<UserVo> getEmployee(@PathVariable Long id) {
+        return Result.success(userService.getVOById(id));
+    }
+    /**
+     * 仅HR和BOSS修改员工信息，BOSS可以修改HR的信息，HR不能修改BOSS的信息
+     */
+    @PutMapping("/user/update")
+    @PreAuthorize("hasAnyRole('HR', 'BOSS')")
+    public Result<String> updateUser(@RequestBody UpdateUserDTO dto) {
+        return userService.updateUser(dto);
+    }
     /**
      * 仅HR和BOSS获取考勤记录
      */
@@ -95,9 +112,9 @@ public class AdminController {
     /**
      * 仅HR和BOSS修改考勤记录
      */
-    @PutMapping("/update")
+    @PutMapping("/attendance/update")
     @PreAuthorize("hasAnyRole('HR', 'BOSS')")
-    public Result<String> update(@RequestBody Attendance attendance) {
+    public Result<String> updateAttendance(@RequestBody Attendance attendance) {
         return attendanceService.updateById(attendance) ? Result.success("修改成功") : Result.error("修改失败");
     }
     /**
@@ -207,7 +224,7 @@ public class AdminController {
      * HR查看单个请假申请
      */
     @GetMapping("/leave/{id}")
-    @PreAuthorize("hasAnyRole('Boss','HR')")
+    @PreAuthorize("hasAnyRole('BOSS','HR')")
     public Result<LeaveSignleVO> leave(@PathVariable Integer id) {
         return Result.success(leaveRequestService.getByLeaveId(id));
     }

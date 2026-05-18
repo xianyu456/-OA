@@ -1,5 +1,6 @@
 package com.mwh.config;
 
+import com.mwh.Enum.UserEnum;
 import com.mwh.pojo.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -43,5 +44,9 @@ public class MyUserDetails implements UserDetails {
 
     public String getRole() {
         return String.valueOf(user.getRole().getRole());
+    }
+
+    public UserEnum getRoleEnum() {
+        return user.getRole();
     }
 }

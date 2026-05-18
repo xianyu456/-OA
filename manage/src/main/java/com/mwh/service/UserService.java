@@ -1,9 +1,11 @@
 package com.mwh.service;
 
+import com.mwh.dto.UpdateUserDTO;
 import com.mwh.dto.UserPageDTO;
 import com.mwh.pojo.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mwh.result.PageResult;
+import com.mwh.result.Result;
 import com.mwh.vo.UserVo;
 
 import java.util.List;
@@ -15,20 +17,19 @@ import java.util.List;
 */
 public interface UserService extends IService<User> {
     PageResult selectAllPeople(UserPageDTO userPageDTO);
+
     /**
-     * 查询所有用户
-     * @return
+     * 修改用户信息（BOSS可修改HR，HR不可修改BOSS）
      */
+    Result<String> updateUser(UpdateUserDTO dto);
 
     /**
-      * 修改用户信息
-      * @param user
-      */
-   void updateUser(User user);
-
-   /**
      * 删除用户(不能删除BOSS)
-     * @param id
      */
-   void deleteUser(Long id);
+    void deleteUser(Long id);
+
+    /**
+     * 根据ID获取用户视图对象
+     */
+    UserVo getVOById(Long id);
 }
