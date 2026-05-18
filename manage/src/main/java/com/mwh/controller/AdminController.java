@@ -3,15 +3,13 @@ package com.mwh.controller;
 import com.mwh.dto.AttendancePageDTO;
 import com.mwh.dto.LeavePageDTO;
 import com.mwh.dto.UserPageDTO;
-import com.mwh.pojo.Attendance;
-import com.mwh.pojo.AttendanceRule;
-import com.mwh.pojo.User;
-import com.mwh.pojo.LeaveType;
+import com.mwh.pojo.*;
 import com.mwh.result.PageResult;
 import com.mwh.result.Result;
 import com.mwh.service.*;
 import com.mwh.util.SecurityUtils;
 
+import com.mwh.vo.LeaveSignleVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 
@@ -204,5 +202,29 @@ public class AdminController {
     @GetMapping("/leave/list")
     public Result<PageResult> list(LeavePageDTO pageDTO) {
         return Result.success(leaveRequestService.listByPage(pageDTO));
+    }
+    /**
+     * HR查看单个请假申请
+     */
+    @GetMapping("/leave/{id}")
+    @PreAuthorize("hasAnyRole('Boss','HR')")
+    public Result<LeaveSignleVO> leave(@PathVariable Integer id) {
+        return Result.success(leaveRequestService.getByLeaveId(id));
+    }
+    /**
+     * HR对请假条进行通过或驳回
+     */
+    @PutMapping("leave/pass")
+    @PreAuthorize("hasRole('HR')")
+    public Result<String> pass(@RequestBody LeaveSignleVO leaveRequest) {
+        return leaveRequestService.pass(leaveRequest) ? Result.success("通过成功") : Result.error("通过失败");
+    }
+    /**
+     * BOSS对请假条进行通过或驳回
+     */
+    @PutMapping("leave/bosspass")
+    @PreAuthorize("hasRole('BOSS')")
+    public Result<String> bossPass(@RequestBody LeaveSignleVO leaveRequest) {
+        return leaveRequestService.bossPass(leaveRequest) ? Result.success("通过成功") : Result.error("通过失败");
     }
 }

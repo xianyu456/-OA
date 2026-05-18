@@ -15,13 +15,12 @@ import java.time.LocalDate;
  * @Version 1.0
  */
 @Data
-public class LeaveRequestHRVO {
+public class LeavePageRequestHRVO {
     /**
      * 请假单ID
      */
     @TableId(type = IdType.AUTO)
     private Long id;
-
     /**
      * 申请人ID
      */
@@ -34,36 +33,10 @@ public class LeaveRequestHRVO {
      * 请假类型名称
      */
     private String leaveTypeName;
-
-    /**
-     * 请假开始时间
-     */
-    private LocalDate startTime;
-
-    /**
-     * 请假结束时间
-     */
-    private LocalDate endTime;
-
-    /**
-     * 请假天数
-     */
-    private BigDecimal days;
-
-    /**
-     * 请假事由
-     */
-    private String reason;
-
     /**
      * 状态：1待HR审批 2HR通过待老板 3老板通过 4驳回 5撤销
      */
     private LeaveStatus status;
-
-    /**
-     * HR审批意见
-     */
-    private String hrComment;
     /**
      * 申请时间
      */

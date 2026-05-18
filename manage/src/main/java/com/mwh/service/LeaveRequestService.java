@@ -5,6 +5,7 @@ import com.mwh.dto.LeaveRequestDTO;
 import com.mwh.pojo.LeaveRequest;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mwh.result.PageResult;
+import com.mwh.vo.LeaveSignleVO;
 
 /**
 * @author mawenhan
@@ -25,4 +26,18 @@ public interface LeaveRequestService extends IService<LeaveRequest> {
      * @return
      */
     PageResult listByPage(LeavePageDTO pageDTO);
+
+    /**
+     * HR审批请假
+     * @param leaveRequest
+     * @return
+     */
+    boolean pass(LeaveSignleVO leaveRequest);
+
+    /**
+     * HR或BOSS查看请假单信息
+     * @param id
+     * @return
+     */
+    LeaveSignleVO getByLeaveId(Integer id);
 }

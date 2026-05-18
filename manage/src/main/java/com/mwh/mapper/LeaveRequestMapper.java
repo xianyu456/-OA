@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mwh.dto.LeavePageDTO;
 import com.mwh.pojo.LeaveRequest;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.mwh.vo.LeaveSignleVO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -22,6 +23,7 @@ public interface LeaveRequestMapper extends BaseMapper<LeaveRequest> {
      * @return
      */
     IPage<LeaveRequest> listByPage(Page<LeaveRequest> page, LeavePageDTO pageDTO);
+
 }
 
 
