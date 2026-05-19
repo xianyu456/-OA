@@ -1,6 +1,7 @@
 package com.mwh.vo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.mwh.Enum.LeaveStatus;
 import lombok.Data;
@@ -26,7 +27,11 @@ public class LeaveSignleVO {
      * 申请人ID
      */
     private Long applicantId;
-
+    /**
+     * 申请人姓名
+     */
+    @TableField(exist = false)
+    private String applicantName;
     /**
      * 请假类型ID
      */

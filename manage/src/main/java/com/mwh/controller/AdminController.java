@@ -217,6 +217,7 @@ public class AdminController {
      * HR查看所有请假申请
      */
     @GetMapping("/leave/list")
+    @PreAuthorize("hasAnyRole('BOSS','HR')")
     public Result<PageResult> list(LeavePageDTO pageDTO) {
         return Result.success(leaveRequestService.listByPage(pageDTO));
     }

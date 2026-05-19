@@ -13,7 +13,7 @@ import lombok.Getter;
 @Getter
 public enum LeaveStatus {
     PENDING("待HR审批",0),
-    HRAGREE("待老板审批",1),
+    HRAGREE("HR通过待老板审批",1),
     APPROVED("已通过",2),
     REJECTED("驳回",3),
     BACK("撤销",4);

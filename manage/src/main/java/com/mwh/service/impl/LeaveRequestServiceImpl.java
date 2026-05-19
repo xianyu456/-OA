@@ -112,7 +112,23 @@ public class LeaveRequestServiceImpl extends ServiceImpl<LeaveRequestMapper, Lea
     @Override
     public LeaveSignleVO getByLeaveId(Integer id) {
         LeaveRequest byId = getById(id);
+        User byId1 = userService.getById(byId.getApplicantId());
+        byId.setApplicantName(byId1.getRealName());
         LeaveSignleVO leaveSignleVO = new LeaveSignleVO();
+        if(byId.getStatus() == LeaveStatus.APPROVED){
+            leaveSignleVO.setResult(byId.getStatus());
+            leaveSignleVO.setBossResult(byId.getStatus());
+        }
+        else if(byId.getStatus() == LeaveStatus.REJECTED){
+            leaveSignleVO.setResult(byId.getStatus());
+            leaveSignleVO.setBossResult(byId.getStatus());
+        }
+        else if(byId.getStatus() == LeaveStatus.HRAGREE){
+            leaveSignleVO.setResult(LeaveStatus.HRAGREE);
+            leaveSignleVO.setBossResult(LeaveStatus.PENDING);
+        }
+        leaveSignleVO.setHrRemark(byId.getHrComment());
+        leaveSignleVO.setBossRemark(byId.getBossComment());
         BeanUtils.copyProperties(byId, leaveSignleVO);
         return leaveSignleVO;
     }
@@ -127,7 +143,7 @@ public class LeaveRequestServiceImpl extends ServiceImpl<LeaveRequestMapper, Lea
         LambdaQueryWrapper<LeaveRequest> leaveRequestLambdaQueryWrapper = new LambdaQueryWrapper<>();
         leaveRequestLambdaQueryWrapper.eq(LeaveRequest::getId, leaveRequest.getId());
         LeaveRequest one = getOne(leaveRequestLambdaQueryWrapper);
-        one.setStatus(leaveRequest.getBossResult());
+        one.setStatus(leaveRequest.getResult());
         one.setBossComment(leaveRequest.getBossRemark());
         one.setBossApprovedAt(LocalDate.now());
         updateById(one);
