@@ -8,6 +8,7 @@ import com.mwh.Enum.LeaveStatus;
 import com.mwh.Enum.UserEnum;
 import com.mwh.dto.LeavePageDTO;
 import com.mwh.dto.LeaveRequestDTO;
+import com.mwh.dto.MyLeaveRequestPageDTO;
 import com.mwh.mapper.UserLeaveQuotaMapper;
 import com.mwh.pojo.LeaveRequest;
 import com.mwh.pojo.User;
@@ -23,8 +24,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Objects;
 
 /**
 * @author mawenhan
@@ -49,6 +53,8 @@ public class LeaveRequestServiceImpl extends ServiceImpl<LeaveRequestMapper, Lea
         BeanUtils.copyProperties(leaveRequestDTO, leaveRequest);
         Long currentUserId = SecurityUtils.getCurrentUserId();
         User byId = userService.getById(currentUserId);
+        leaveRequest.setApplicantId(currentUserId);
+        leaveRequest.setDays(BigDecimal.valueOf(ChronoUnit.DAYS.between(leaveRequestDTO.getStartTime(), leaveRequestDTO.getEndTime()) + 1));
         if(byId.getRole().equals(UserEnum.HR)){
             leaveRequest.setStatus(LeaveStatus.HRAGREE);
         }
@@ -56,6 +62,7 @@ public class LeaveRequestServiceImpl extends ServiceImpl<LeaveRequestMapper, Lea
             leaveRequest.setStatus(LeaveStatus.PENDING);
         }
         save(leaveRequest);
+
     }
 
     /**
@@ -125,8 +132,8 @@ public class LeaveRequestServiceImpl extends ServiceImpl<LeaveRequestMapper, Lea
         }
         else if(byId.getStatus() == LeaveStatus.HRAGREE){
             leaveSignleVO.setResult(LeaveStatus.HRAGREE);
-            leaveSignleVO.setBossResult(LeaveStatus.PENDING);
         }
+
         leaveSignleVO.setHrRemark(byId.getHrComment());
         leaveSignleVO.setBossRemark(byId.getBossComment());
         BeanUtils.copyProperties(byId, leaveSignleVO);
@@ -148,6 +155,43 @@ public class LeaveRequestServiceImpl extends ServiceImpl<LeaveRequestMapper, Lea
         one.setBossApprovedAt(LocalDate.now());
         updateById(one);
         return true;
+    }
+
+    /**
+     * 查看自己的请假单
+     * @param myLeaveRequestPageDTO
+     * @return
+     */
+    @Override
+    public PageResult listMyLeaveList(MyLeaveRequestPageDTO myLeaveRequestPageDTO) {
+        if(!Objects.equals(myLeaveRequestPageDTO.getApplicationId(), SecurityUtils.getCurrentUserId())){
+            throw new RuntimeException("无此权限查看别人的");
+        }
+        Page<LeaveRequest> page = new Page<>(myLeaveRequestPageDTO.getPageNum(), myLeaveRequestPageDTO.getPageSize());
+        IPage<LeaveRequest> ipage = leaveRequestMapper.listMyLeaveList(page, myLeaveRequestPageDTO);
+        PageResult<LeaveRequest> objectPageResult = new PageResult<>();
+        objectPageResult.setTotal(ipage.getTotal());
+        objectPageResult.setRecords(ipage.getRecords());
+        return objectPageResult;
+    }
+
+    /**
+     * 查看自己的请假单详情
+     * @param id
+     * @param applicationId
+     * @return
+     */
+    @Override
+    public LeaveSignleVO getByMyLeaveId(Long id, Long applicationId) {
+        LeaveRequest byId = getById(id);
+        LeaveSignleVO leaveSignleVO = new LeaveSignleVO();
+        leaveSignleVO.setResult(byId.getStatus());
+        leaveSignleVO.setBossResult(byId.getStatus());
+        leaveSignleVO.setHrRemark(byId.getHrComment());
+        leaveSignleVO.setBossRemark(byId.getBossComment());
+
+        BeanUtils.copyProperties(byId, leaveSignleVO);
+        return leaveSignleVO;
     }
 }
 

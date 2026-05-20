@@ -3,6 +3,7 @@ package com.mwh.mapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mwh.dto.LeavePageDTO;
+import com.mwh.dto.MyLeaveRequestPageDTO;
 import com.mwh.pojo.LeaveRequest;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.mwh.vo.LeaveSignleVO;
@@ -24,6 +25,13 @@ public interface LeaveRequestMapper extends BaseMapper<LeaveRequest> {
      */
     IPage<LeaveRequest> listByPage(Page<LeaveRequest> page, LeavePageDTO pageDTO);
 
+    /**
+     * 查询自己的请假单
+     * @param page
+     * @param myLeaveRequestPageDTO
+     * @return
+     */
+    IPage<LeaveRequest> listMyLeaveList(Page<LeaveRequest> page, MyLeaveRequestPageDTO myLeaveRequestPageDTO);
 }
 
 

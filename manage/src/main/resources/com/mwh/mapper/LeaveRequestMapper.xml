@@ -18,5 +18,23 @@
             </if>
         </where>
     </select>
+    <select id="listMyLeaveList" resultType="com.mwh.pojo.LeaveRequest">
+        select l.id, l.applicant_id, l.leave_type_id, l.start_time, l.end_time, l.days, l.reason, l.status,
+        l.hr_comment, l.boss_comment, l.hr_approved_at, l.boss_approved_at, l.created_at, l.updated_at, t.name as
+        leaveTypeName, e.real_name as applicantName from leave_request l left join leave_type t on l.leave_type_id =
+        t.id left join user e on
+        l.applicant_id = e.id
+        <where>
+            <if test="myLeaveRequestPageDTO.applicationId != null">
+                and l.applicant_id = #{myLeaveRequestPageDTO.applicationId}
+            </if>
+            <if test="myLeaveRequestPageDTO.leaveTypeName != null">
+                and t.name like concat('%',#{myLeaveRequestPageDTO.leaveTypeName},'%')
+            </if>
+        </where>
+        <if test="myLeaveRequestPageDTO.commitDate != null">
+            and l.commit_date = #{myLeaveRequestPageDTO.commitDate}
+        </if>
+    </select>
 
 </mapper>

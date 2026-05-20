@@ -2,6 +2,7 @@ package com.mwh.service;
 
 import com.mwh.dto.LeavePageDTO;
 import com.mwh.dto.LeaveRequestDTO;
+import com.mwh.dto.MyLeaveRequestPageDTO;
 import com.mwh.pojo.LeaveRequest;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mwh.result.PageResult;
@@ -47,4 +48,13 @@ public interface LeaveRequestService extends IService<LeaveRequest> {
      * @return
      */
     boolean bossPass(LeaveSignleVO leaveRequest);
+
+    /**
+     * 查看自己的请假
+     * @param myLeaveRequestPageDTO
+     * @return
+     */
+    PageResult listMyLeaveList(MyLeaveRequestPageDTO myLeaveRequestPageDTO);
+
+    LeaveSignleVO getByMyLeaveId(Long id, Long applicationId);
 }
